@@ -1,6 +1,7 @@
 import sys
 import csv
 import numpy
+from collections import defaultdict
 
 def floatify(string) :
     try :
@@ -11,13 +12,21 @@ def floatify(string) :
 reader = csv.reader(sys.stdin)
 next(reader)
 
-choices, weights = zip(*(reader))
+cells = defaultdict(lambda : ([], []))
+ 
+for row, col, street_gid, weight in reader :
+    cells[row, col][0].append(street_gid) 
+    cells[row, col][1].append(weight) 
 
-choices = numpy.array(choices, dtype='i4')
-weights = numpy.array([floatify(weight) for weight in weights])
-weights /= numpy.sum(weights)
+sample = []
 
-sample = numpy.random.choice(choices, int(sys.argv[1]), replace=False, p=weights)
+for choices, weights in cells.values() :
+    choices = numpy.array(choices, dtype='i4')
+    weights = numpy.array([floatify(weight) for weight in weights])
+    weights = numpy.sqrt(weights + 1)
+    weights /= numpy.sum(weights)
 
-print("(" + ", ".join(sample.astype(str)) + ")")
+    sample += numpy.random.choice(choices, int(sys.argv[1]), replace=False, p=weights).astype(str).tolist()
+
+print("(" + ", ".join(sample) + ")")
 
