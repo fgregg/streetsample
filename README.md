@@ -1,5 +1,5 @@
 # streetsample
-This Makefile builds a shapefile that is population weighted random sample of Chicago street segments.
+This Makefile builds a shapefile that samples from a cells from Chicago and then selects 30 streets segments randomly, weighed by population
 
 # Requirements
 - PostGIS
@@ -14,9 +14,9 @@ Change the database settings in `config.mk.example` and save the modified file a
 > make 
 ```
 
-To change the size of the sample use the command line argument `SAMPLE_SIZE`. The default is 1000
+To change the size of the sample use the command line argument `SAMPLE_SIZE`. The default is 30
 ```bash
-> make SAMPLE_SIZE=3000
+> make SAMPLE_SIZE=40
 ```
 
 # To cleanup shapefiles
